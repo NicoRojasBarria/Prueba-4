@@ -33,64 +33,76 @@ Debe ingresar una opción válida!!'''
 
 
 stock_total = 20
-reservas = {}  # Diccionario: nombre -> cantidad (1 o 2)
-
+reservas = {}
 frase_secreta = "EstoyEnListaDeReserva"
 
-while True:
-    print("TOTEM AUTOATENCIÓN RESERVA STRIKE")
+def mostrar_menu():
+    print("TOTEM AUTOATENCION RESERVA STRIKE")
     print("1.- Reservar zapatillas")
     print("2.- Buscar zapatillas reservadas")
     print("3.- Ver stock de reservas")
     print("4.- Salir")
-    opcion = input("Seleccione una opción (1-4): ")
 
-    if opcion == "1":
-        print("-- Reservar Zapatillas --")
-        nombre = input("Nombre del comprador: ")
-        clave = input("Digite la palabra secreta para confirmar la reserva: ")
-        if clave != frase_secreta:
-            print("Error: palabra clave incorrecta. Reserva no realizada.")
-        elif nombre in reservas:
-            print(f"{nombre} ya tiene una reserva.")
-        elif stock_total >= 1:
-            reservas[nombre] = 1
-            stock_total -= 1
-            print(f"Reserva realizada exitosamente para {nombre}.")
-        else:
-            print("No hay stock disponible para nuevas reservas.")
-
-    elif opcion == "2":
-        print("-- Buscar Zapatillas Reservadas --")
-        nombre = input("Nombre del comprador a buscar: ")
-        if nombre in reservas:
-            cantidad = reservas[nombre]
-            tipo = "VIP" if cantidad == 2 else "estándar"
-            print(f"Reserva encontrada: {nombre} - {cantidad} par(es) ({tipo}).")
-            if cantidad == 1:
-                vip = input("¿Desea pagar adicional para VIP y reservar 2 pares? (s/n): ").strip().lower()
-                if vip == "s":
-                    if stock_total >= 1:
-                        reservas[nombre] = 2
-                        stock_total -= 1
-                        print(f"Reserva actualizada a VIP. Ahora {nombre} tiene 2 pares reservados.")
-                    else:
-                        print("No hay stock suficiente para actualizar a VIP.")
-                else:
-                    print("Manteniendo reserva actual.")
-        else:
-            print("No se encontró ninguna reserva con ese nombre.")
-
-    elif opcion == "3":
-        print("-- Ver Stock de Reservas --")
-        reservados = sum(reservas.values())
-        disponibles = 20 - reservados
-        print(f"Pares reservados: {reservados}")
-        print(f"Pares disponibles: {disponibles}")
-
-    elif opcion == "4":
-        print("Programa terminado.")
-        break
-
+def reservar_zapatillas():
+    global stock_total
+    print("-- Reservar Zapatillas --")
+    nombre = input("Nombre del comprador: ")
+    clave = input("Digite la palabra secreta para confirmar la reserva: ")
+    if clave != frase_secreta:
+        print("Error: palabra clave incorrecta. Reserva no realizada.")
+    elif nombre in reservas:
+        print(f"{nombre} ya tiene una reserva.")
+    elif stock_total >= 1:
+        reservas[nombre] = 1
+        stock_total -= 1
+        print(f"Reserva realizada exitosamente para {nombre}.")
     else:
-        print("Debe ingresar una opción válida!!")
+        print("No hay stock disponible para nuevas reservas.")
+
+def buscar_reserva():
+    global stock_total
+    print("-- Buscar Zapatillas Reservadas --")
+    nombre = input("Nombre del comprador a buscar: ")
+    if nombre in reservas:
+        cantidad = reservas[nombre]
+        tipo = "VIP" if cantidad == 2 else "estandar"
+        print(f"Reserva encontrada: {nombre} - {cantidad} par(es) ({tipo}).")
+        if cantidad == 1:
+            decision = input("¿Desea pagar adicional para VIP y reservar 2 pares? (s/n): ").strip().lower()
+            if decision == "s":
+                if stock_total >= 1:
+                    reservas[nombre] = 2
+                    stock_total -= 1
+                    print(f"Reserva actualizada a VIP. Ahora {nombre} tiene 2 pares reservados.")
+                else:
+                    print("No hay stock suficiente para actualizar a VIP.")
+            else:
+                print("Manteniendo reserva actual.")
+    else:
+        print("No se encontro ninguna reserva con ese nombre.")
+
+def ver_stock():
+    print("-- Ver Stock de Reservas --")
+    reservados = sum(reservas.values())
+    disponibles = 20 - reservados
+    print(f"Pares reservados: {reservados}")
+    print(f"Pares disponibles: {disponibles}")
+
+def main():
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opcion (1-4): ")
+        if opcion == "1":
+            reservar_zapatillas()
+        elif opcion == "2":
+            buscar_reserva()
+        elif opcion == "3":
+            ver_stock()
+        elif opcion == "4":
+            print("Programa terminado.")
+            break
+        else:
+            print("Debe ingresar una opcion valida!!")
+        print()
+        
+main()
